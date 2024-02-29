@@ -1,5 +1,6 @@
 *.img
 *.xz
+*.tar
 *.iso
 *.raw
 *.tar.gz
