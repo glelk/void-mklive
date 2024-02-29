@@ -63,6 +63,7 @@ usage() {
 	 -n               Do not compress the image, instead print out the ROOTFS directory
 	 -o <file>        Filename to write the PLATFORMFS archive to (default: automatic)
 	 -p "<pkg> ..."   Additional packages to install into the ROOTFS
+  	 -q "<pkg> ..."	  Packages to remove from ROOTFS
 	 -r <repo>        Use this XBPS repository. May be specified multiple times
 	 -x <num>         Number of threads to use for image compression (default: dynamic)
 	 -h               Show this help and exit
@@ -77,10 +78,11 @@ usage() {
 BASEPKG=base-system
 COMPRESSION="y"
 
-while getopts "b:p:k:c:C:r:x:o:nhV" opt; do
+while getopts "b:p:q:k:c:C:r:x:o:nhV" opt; do
     case $opt in
         b) BASEPKG="$OPTARG" ;;
         p) EXTRA_PKGS="$OPTARG" ;;
+	q) REMOVE_PKGS="$OPTARG" ;;
         k) POST_CMD="$OPTARG" ;;
         c) XBPS_CACHEDIR="--cachedir=$OPTARG" ;;
         C) XBPS_CONFFILE="-C $OPTARG" ;;
@@ -156,10 +158,14 @@ info_msg "Expanding base tarball $BASE_TARBALL into $ROOTFS for $PLATFORM build.
 tar xf "$BASE_TARBALL" --xattrs --xattrs-include='*' -C "$ROOTFS"
 
 # This will install, but not configure, the packages specified by
-# $PKGS.  After this step we will do an xbps-reconfigure -f $PKGS
-# under the correct architecture to ensure the system is setup
-# correctly.
+# $PKGS.  
 run_cmd_target "xbps-install -SU $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY -r $ROOTFS -y $PKGS"
+
+# This vil remove packages specified by $REMOVE_PKGS. After this step 
+# we will do an xbps-reconfigure -f $PKGS under the correct architecture
+# to ensure the system is setup correctly.
+
+run_cmd_target "xbps-remove --recursive $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY -r $ROOTFS -y $REMOVE_PKGS"
 
 # Now that the packages are installed, we need to chroot in and
 # reconfigure.  This needs to be done as the right architecture.
