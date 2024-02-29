@@ -165,7 +165,10 @@ run_cmd_target "xbps-install -SU $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY 
 # we will do an xbps-reconfigure -f $PKGS under the correct architecture
 # to ensure the system is setup correctly.
 
-run_cmd_target "xbps-remove --recursive $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY -r $ROOTFS -y $REMOVE_PKGS"
+if [ -n "$REMOVE_PKGS" ]; then
+    info_msg "Running user supplied command: $POST_CMD"
+    run_cmd_target "xbps-remove --recursive $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY -r $ROOTFS -y $REMOVE_PKGS"
+fi
 
 # Now that the packages are installed, we need to chroot in and
 # reconfigure.  This needs to be done as the right architecture.
