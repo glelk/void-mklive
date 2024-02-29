@@ -166,7 +166,7 @@ run_cmd_target "xbps-install -SU $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY 
 # to ensure the system is setup correctly.
 
 if [ -n "$REMOVE_PKGS" ]; then
-    info_msg "Running user supplied command: $POST_CMD"
+    info_msg "Removing unneeded packages: $REMOVE_PKGS"
     run_cmd_target "xbps-remove --recursive $XBPS_CONFFILE $XBPS_CACHEDIR $XBPS_REPOSITORY -r $ROOTFS -y $REMOVE_PKGS"
 fi
 
