@@ -26,7 +26,7 @@
 
 readonly PROGNAME=$(basename "$0")
 readonly ARCH=$(uname -m)
-readonly REQTOOLS="xbps-install xbps-reconfigure tar xz"
+readonly REQTOOLS="xbps-install xbps-reconfigure tar"
 
 # This source pulls in all the functions from lib.sh.  This set of
 # functions makes it much easier to work with chroots and abstracts
@@ -224,8 +224,8 @@ fi
 if [ "$COMPRESSION" = "y" ]; then
     # Finally we can compress the tarball, the name will include the
     # platform and the date on which the tarball was built.
-    tarball=${FILENAME:-void-${PLATFORM}-PLATFORMFS-$(date -u '+%Y%m%d').tar.xz}
-    run_cmd "tar cp --posix --xattrs --xattrs-include='*' -C $ROOTFS . | xz -T${COMPRESSOR_THREADS:-0} -9 > $tarball "
+    tarball=${FILENAME:-void-${PLATFORM}-PLATFORMFS-$(date -u '+%Y%m%d').tar}
+    run_cmd "tar cpf $tarball --posix --xattrs --xattrs-include='*' -C $ROOTFS . "
     [ $? -ne 0 ] && die "Failed to compress tarball"
 
     # Now that we have the tarball we don't need the rootfs anymore, so we

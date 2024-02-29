@@ -27,7 +27,7 @@
 
 readonly PROGNAME=$(basename "$0")
 readonly ARCH=$(uname -m)
-readonly REQTOOLS="xbps-install xbps-reconfigure tar xz"
+readonly REQTOOLS="xbps-install xbps-reconfigure tar"
 
 # This source pulls in all the functions from lib.sh.  This set of
 # functions makes it much easier to work with chroots and abstracts
@@ -217,8 +217,8 @@ rm -rf "$ROOTFS/var/cache/*" 2>/dev/null
 
 # Finally we can compress the tarball, the name will include the
 # architecture and the date on which the tarball was built.
-: "${FILENAME:=void-${XBPS_TARGET_ARCH}-ROOTFS-$(date -u '+%Y%m%d').tar.xz}"
-run_cmd "tar cp --posix --xattrs --xattrs-include='*' -C $ROOTFS . | xz -T${COMPRESSOR_THREADS:-0} -9 > $FILENAME "
+: "${FILENAME:=void-${XBPS_TARGET_ARCH}-ROOTFS-$(date -u '+%Y%m%d').tar}"
+run_cmd "tar cpf $FILENAME --posix --xattrs --xattrs-include='*' -C $ROOTFS . "
 
 # Now that we have the tarball we don't need the rootfs anymore, so we
 # can get rid of it.

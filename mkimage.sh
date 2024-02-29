@@ -359,8 +359,8 @@ case "$PLATFORM" in
         info_msg "Sucessfully created ${FILENAME%.img}.tar.gz image."
         ;;
     *)
-        info_msg "Compressing $FILENAME with xz (level 9 compression)"
-        xz "-T${COMPRESSOR_THREADS:-0}" -9 "$FILENAME"
+        # info_msg "Compressing $FILENAME with xz (level 9 compression)"
+        # xz "-T${COMPRESSOR_THREADS:-0}" -9 "$FILENAME"
         info_msg "Successfully created $FILENAME image."
         ;;
 esac
