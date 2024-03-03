@@ -82,7 +82,7 @@ while getopts "b:p:q:k:c:C:r:x:o:nhV" opt; do
     case $opt in
         b) BASEPKG="$OPTARG" ;;
         p) EXTRA_PKGS="$OPTARG" ;;
-	q) REMOVE_PKGS="$OPTARG" ;;
+	    q) REMOVE_PKGS="$OPTARG" ;;
         k) POST_CMD="$OPTARG" ;;
         c) XBPS_CACHEDIR="--cachedir=$OPTARG" ;;
         C) XBPS_CONFFILE="-C $OPTARG" ;;
@@ -225,7 +225,7 @@ rm -rf "$ROOTFS/var/cache/*" 2>/dev/null
 # $ROOTFS as a parameter.
 if [ -n "$POST_CMD" ]; then
     info_msg "Running user supplied command: $POST_CMD"
-    run_cmd $POST_CMD $ROOTFS
+    run_cmd $POST_CMD $ROOTFS $PLATFORM
 fi
 
 
