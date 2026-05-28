@@ -1358,7 +1358,8 @@ ${BOLD}Do you want to continue?${RESET}" 20 80 || return
     # Create and mount filesystems
     create_filesystems
 
-    if find "$TARGETDIR" -xdev -mindepth 1 -maxdepth 1 -not -name 'lost+found' | read; then
+    # check if there are any files in the root partition, ignoring lost+found
+    if find "$TARGETDIR" -xdev -not -name 'lost+found' -not -type d | read; then
         DIALOG --msgbox "${BOLD}${RED}ERROR:${RESET} \
 Root partition not empty! Aborting..." ${MSGBOXSIZE}
         DIE 1
